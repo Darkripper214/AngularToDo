@@ -41,9 +41,11 @@ export class TodoComponent implements OnInit {
       let todo = this.getLSItem();
       if (todo) {
         todo.push(newTodo);
-        localStorage.setItem('todo', JSON.stringify(todo));
+        this.setToDoToLS(todo);
+        // localStorage.setItem('todo', JSON.stringify(todo));
       } else {
-        localStorage.setItem('todo', JSON.stringify([newTodo]));
+        this.setToDoToLS([newTodo]);
+        // localStorage.setItem('todo', JSON.stringify([newTodo]));
       }
       this.setToDoList();
       return;
@@ -68,6 +70,10 @@ export class TodoComponent implements OnInit {
     this.toDoList = this.getLSItem();
   }
 
+  setToDoToLS(todo: TODO[]) {
+    localStorage.setItem('todo', JSON.stringify(todo));
+  }
+
   clearLS() {
     localStorage.clear();
     this.setToDoList();
@@ -76,14 +82,14 @@ export class TodoComponent implements OnInit {
   deleteSingleToDo(i: number) {
     let todo = this.getLSItem();
     todo.splice(i, 1);
-    localStorage.setItem('todo', JSON.stringify(todo));
+    this.setToDoToLS(todo);
     this.setToDoList();
   }
 
   completeSingleToDo(i: number) {
     let todo = this.getLSItem();
     todo[i].complete = !todo[i].complete;
-    localStorage.setItem('todo', JSON.stringify(todo));
+    this.setToDoToLS(todo);
     this.setToDoList();
   }
 }
