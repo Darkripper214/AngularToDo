@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1605758208202,
+  "timestamp": 1605763404557,
   "index": "https://darkripper214.github.io/AngularToDo/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "https://darkripper214.github.io/AngularToDo/favicon.ico",
         "https://darkripper214.github.io/AngularToDo/index.html",
-        "https://darkripper214.github.io/AngularToDo/main.7acc35716204c7e9db0a.js",
+        "https://darkripper214.github.io/AngularToDo/main.ef2a59f9a1bd99592132.js",
         "https://darkripper214.github.io/AngularToDo/manifest.webmanifest",
         "https://darkripper214.github.io/AngularToDo/polyfills.35a5ca1855eb057f016a.js",
         "https://darkripper214.github.io/AngularToDo/runtime.acf0dec4155e77772545.js",
@@ -52,8 +52,8 @@
     "https://darkripper214.github.io/AngularToDo/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "https://darkripper214.github.io/AngularToDo/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "https://darkripper214.github.io/AngularToDo/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "https://darkripper214.github.io/AngularToDo/index.html": "c8feebe7a4e94fa9e2c091aca77cfb699ead005b",
-    "https://darkripper214.github.io/AngularToDo/main.7acc35716204c7e9db0a.js": "2f7a8af2a0a0131f6756b8ac833fd5f1610a5397",
+    "https://darkripper214.github.io/AngularToDo/index.html": "00dd1663a3922596940470de13098768fce03665",
+    "https://darkripper214.github.io/AngularToDo/main.ef2a59f9a1bd99592132.js": "c05e52e297e87b3463fa5b15533d604e4bd67b63",
     "https://darkripper214.github.io/AngularToDo/manifest.webmanifest": "ed12be94282eb021a0fd66787c45e9f3151f28e6",
     "https://darkripper214.github.io/AngularToDo/polyfills.35a5ca1855eb057f016a.js": "578360d24ce37383f261c7ef63b1f822d28e8dde",
     "https://darkripper214.github.io/AngularToDo/runtime.acf0dec4155e77772545.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
