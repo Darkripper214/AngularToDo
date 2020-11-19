@@ -1,100 +1,141 @@
 <div class="container">
+  <h3>ToDo List</h3>
+
   <div class="alert alert-danger" role="alert" *ngIf="errorMsg">
     Cannot Add Overdued Task
   </div>
+
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="desc">Description</label>
-      <input
-        type="text"
-        class="form-control"
-        id="desc"
-        formControlName="desc"
-      />
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label for="desc">Description</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Your Task"
+          required
+          class="form-control"
+          id="desc"
+          formControlName="desc"
+        />
+        <mat-error
+          *ngIf="
+            form.get('desc').hasError('required') && form.get('desc').touched
+          "
+          >Please Input</mat-error
+        >
+      </mat-form-field>
     </div>
+
     <div class="form-group">
-      <label for="date">Due</label>
-      <input type="date" class="form-control" id="date" formControlName="due" />
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label for="date">Due Date</mat-label>
+        <input
+          matInput
+          required
+          class="form-control"
+          id="date"
+          formControlName="due"
+          [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error
+          *ngIf="
+            form.get('due').hasError('required') && form.get('due').touched
+          "
+          >Please Input</mat-error
+        >
+      </mat-form-field>
     </div>
-    <div class="form-group form-check">
-      <label>Priority</label>
+
+    <div class="form-group">
+      <label>Priority*</label>
       <br />
-      <div class="col-3">
-        <input
-          type="radio"
-          name="priority"
-          class="form-check-input"
-          id="high"
-          formControlName="priority"
-          value="high"
-        />
-        <label class="form-check-label" for="high">High</label>
-      </div>
-
-      <div class="col-3">
-        <input
-          type="radio"
-          name="priority"
-          class="form-check-input"
-          id="medium"
-          formControlName="priority"
-          value="medium"
-        />
-        <label class="form-check-label" for="medium">Medium </label>
-      </div>
-
-      <div class="col-3">
-        <input
-          type="radio"
-          name="priority"
-          class="form-check-input"
-          id="low"
-          formControlName="priority"
-          value="low"
-        />
-        <label class="form-check-label" for="low">Low</label>
-      </div>
+      <mat-radio-group formControlName="priority" name="priority">
+        <mat-radio-button
+          *ngFor="let item of priorityList"
+          [value]="item"
+          class="mr-2"
+        >
+          {{ item | titlecase }}
+        </mat-radio-button>
+        <mat-error *ngIf="form.get('due').hasError('required') && form.touched"
+          >Please Select</mat-error
+        >
+      </mat-radio-group>
     </div>
-    <div
-      class="alert alert-warning"
-      *ngIf="
-        form.get('desc').hasError('required') ||
-        form.get('due').hasError('required') ||
-        form.get('priority').hasError('required')
-      "
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      class=""
+      [disabled]="!form.valid"
     >
-      Please input all fields
-    </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
       Submit
     </button>
   </form>
 
   <h3>Task</h3>
 
-  <ul class="list-group col-12">
-    <li
-      class="list-group-item row"
-      *ngFor="let todo of toDoList; let i = index"
-    >
-      <div class="d-flex">
-        <p
-          class="col-10"
-          [ngStyle]="{ 'text-decoration': todo.complete ? 'line-through' : '' }"
-        >
-          {{ todo.desc }} --- {{ todo.due }} --- {{ todo.priority }}
-        </p>
-        <button class="col-1 btn btn-primary" (click)="completeSingleToDo(i)">
-          Complete
-        </button>
-        <button class="col-1 btn btn-danger ml-1" (click)="deleteSingleToDo(i)">
-          Delete
-        </button>
-      </div>
-    </li>
-  </ul>
+  <mat-list class="list-group">
+    <div class="">
+      <mat-list-item
+        class="list-group-item"
+        *ngFor="let todo of toDoList; let i = index"
+      >
+        <div class="special">
+          <div
+            fxLayout="column"
+            [ngStyle]="{
+              'text-decoration': todo.complete ? 'line-through' : ''
+            }"
+          >
+            <strong>
+              {{ todo.desc }}
+            </strong>
 
-  <button class="btn btn-danger" type="button" (click)="clearLS()">
-    Clear Local Storage
+            <div fxLayoutAlign="start center">
+              <div fxLayoutGap="30px">
+                <small>Due on: {{ todo.due }}</small>
+                <small>Priority: {{ todo.priority }}</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="" fxLayout="row" fxLayoutAlign="end end">
+            <button
+              class=""
+              mat-flat-button
+              color="primary"
+              (click)="completeSingleToDo(i)"
+            >
+              Complete
+            </button>
+            <button
+              class="ml-1"
+              mat-flat-button
+              color="accent"
+              (click)="deleteSingleToDo(i)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </div>
+  </mat-list>
+
+  <button
+    class="mt-2"
+    mat-flat-button
+    color="warn"
+    type="button"
+    (click)="clearLS()"
+  >
+    Clear All ToDo
   </button>
 </div>

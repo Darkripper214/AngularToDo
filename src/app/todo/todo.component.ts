@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface TODO {
   desc: string;
@@ -17,7 +18,8 @@ export class TodoComponent implements OnInit {
   errorMsg: boolean = false;
   form: FormGroup;
   toDoList: TODO[];
-  constructor(private fb: FormBuilder) {}
+  priorityList: string[] = ['low', 'medium', 'high'];
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -32,9 +34,11 @@ export class TodoComponent implements OnInit {
 
   onSubmit() {
     let { desc, priority, due } = this.form.value;
-    let newTodo = { desc, priority, due, complete: false };
+    let newTodo = { desc, priority, due: due.toDateString(), complete: false };
     let now = new Date();
+    console.log(typeof now);
     let add = Date.parse(this.form.value.due);
+    console.info(due);
     // if more than negative 1, means overdued, time to UTC
     let dateDiff = (add - now.getTime()) / 1000 / 3600 / 24;
     if (dateDiff > -1) {
@@ -48,6 +52,7 @@ export class TodoComponent implements OnInit {
         // localStorage.setItem('todo', JSON.stringify([newTodo]));
       }
       this.setToDoList();
+      this.notification('New Todo Added', 'dismiss');
       return;
     } else {
       alert('cannot add overdued task');
@@ -77,6 +82,7 @@ export class TodoComponent implements OnInit {
   clearLS() {
     localStorage.clear();
     this.setToDoList();
+    this.notification('All ToDo Removed', 'dismiss');
   }
 
   deleteSingleToDo(i: number) {
@@ -84,6 +90,7 @@ export class TodoComponent implements OnInit {
     todo.splice(i, 1);
     this.setToDoToLS(todo);
     this.setToDoList();
+    this.notification(`${todo[i].desc} deleted`, 'dismiss');
   }
 
   completeSingleToDo(i: number) {
@@ -91,5 +98,13 @@ export class TodoComponent implements OnInit {
     todo[i].complete = !todo[i].complete;
     this.setToDoToLS(todo);
     this.setToDoList();
+    let text = todo[i].complete ? 'completed!' : `due on ${todo[i].due}`;
+    this.notification(`${todo[i].desc} ${text}`, 'dismiss');
+  }
+
+  notification(text: string, action: string) {
+    this._snackBar.open(text, action, {
+      duration: 2000,
+    });
   }
 }
