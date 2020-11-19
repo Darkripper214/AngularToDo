@@ -17,6 +17,8 @@ interface TODO {
 export class TodoComponent implements OnInit {
   errorMsg: boolean = false;
   form: FormGroup;
+  editID: number;
+  editStatus: boolean;
   toDoList: TODO[];
   priorityList: string[] = ['low', 'medium', 'high'];
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {}
@@ -34,24 +36,27 @@ export class TodoComponent implements OnInit {
 
   onSubmit() {
     let { desc, priority, due } = this.form.value;
-    let newTodo = { desc, priority, due: due.toDateString(), complete: false };
+    console.log(due);
+    console.log(typeof due);
+    let newTodo = { desc, priority, due, complete: false };
     let now = new Date();
-    console.log(typeof now);
     let add = Date.parse(this.form.value.due);
-    console.info(due);
     // if more than negative 1, means overdued, time to UTC
     let dateDiff = (add - now.getTime()) / 1000 / 3600 / 24;
+    if (this.editStatus === true) {
+      this.edit(this.editID, newTodo);
+      return;
+    }
     if (dateDiff > -1) {
       let todo = this.getLSItem();
       if (todo) {
         todo.push(newTodo);
         this.setToDoToLS(todo);
-        // localStorage.setItem('todo', JSON.stringify(todo));
       } else {
         this.setToDoToLS([newTodo]);
-        // localStorage.setItem('todo', JSON.stringify([newTodo]));
       }
       this.setToDoList();
+      this.form.reset();
       this.notification('New Todo Added', 'dismiss');
       return;
     } else {
@@ -106,5 +111,28 @@ export class TodoComponent implements OnInit {
     this._snackBar.open(text, action, {
       duration: 2000,
     });
+  }
+  editToDo(i: number) {
+    this.editID = i;
+    this.editStatus = true;
+    let todos = this.getLSItem();
+    let itemToEdit = todos[i];
+    this.form.patchValue(itemToEdit);
+  }
+
+  clearEditToDo() {
+    this.editStatus = false;
+    this.form.reset();
+  }
+
+  edit(id: number, todo: TODO) {
+    let todos = this.getLSItem();
+    todos[id] = todo;
+
+    this.setToDoToLS(todos);
+    this.setToDoList();
+    this.notification('edit success', 'dismiss');
+    //Clear status
+    this.clearEditToDo();
   }
 }

@@ -75,7 +75,16 @@
       class=""
       [disabled]="!form.valid"
     >
-      Submit
+      {{ !editStatus ? "Submit" : "Edit" }}
+    </button>
+    <button
+      *ngIf="editStatus"
+      mat-flat-button
+      color="primary"
+      type="button"
+      (click)="clearEditToDo()"
+    >
+      {{ "Cancel Edit" }}
     </button>
   </form>
 
@@ -100,7 +109,7 @@
 
             <div fxLayoutAlign="start center">
               <div fxLayoutGap="30px">
-                <small>Due on: {{ todo.due }}</small>
+                <small>Due on: {{ todo.due | date: "shortDate" }}</small>
                 <small>Priority: {{ todo.priority }}</small>
               </div>
             </div>
@@ -114,6 +123,14 @@
               (click)="completeSingleToDo(i)"
             >
               Complete
+            </button>
+            <button
+              class="ml-1"
+              mat-flat-button
+              color="accent"
+              (click)="editToDo(i)"
+            >
+              Edit
             </button>
             <button
               class="ml-1"
