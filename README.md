@@ -2,7 +2,7 @@
 
 [GitHubPage](https://darkripper214.github.io/AngularToDo/)
 
-![ToDo](src\assets\code1.PNG)
+![ToDo](src/assets/code1.PNG)
 
 # **Feature**
 
