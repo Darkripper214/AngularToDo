@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface TODO {
@@ -34,7 +39,7 @@ export class TodoComponent implements OnInit {
     console.log(typeof this.toDoList[0].complete);
   }
 
-  onSubmit() {
+  onSubmit(formDirective: FormGroupDirective) {
     let { desc, priority, due } = this.form.value;
     console.log(due);
     console.log(typeof due);
@@ -45,6 +50,8 @@ export class TodoComponent implements OnInit {
     let dateDiff = (add - now.getTime()) / 1000 / 3600 / 24;
     if (this.editStatus === true) {
       this.edit(this.editID, newTodo);
+      formDirective.resetForm();
+      this.form.reset();
       return;
     }
     if (dateDiff > -1) {
@@ -56,6 +63,7 @@ export class TodoComponent implements OnInit {
         this.setToDoToLS([newTodo]);
       }
       this.setToDoList();
+      formDirective.resetForm();
       this.form.reset();
       this.notification('New Todo Added', 'dismiss');
       return;
@@ -120,8 +128,12 @@ export class TodoComponent implements OnInit {
     this.form.patchValue(itemToEdit);
   }
 
-  clearEditToDo() {
+  clearEditToDo(formDirective?: FormGroupDirective) {
     this.editStatus = false;
+    if (formDirective) {
+      formDirective.resetForm();
+    }
+
     this.form.reset();
   }
 

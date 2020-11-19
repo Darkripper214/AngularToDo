@@ -5,7 +5,11 @@
     Cannot Add Overdued Task
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit(formDirective)"
+    #formDirective="ngForm"
+  >
     <div class="form-group">
       <mat-form-field appearance="fill" style="width: 100%">
         <mat-label for="desc">Description</mat-label>
@@ -82,7 +86,7 @@
       mat-flat-button
       color="primary"
       type="button"
-      (click)="clearEditToDo()"
+      (click)="clearEditToDo(formDirective)"
     >
       {{ "Cancel Edit" }}
     </button>
